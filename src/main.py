@@ -1,22 +1,20 @@
-import player
+import mapping
 import pygame
 import sys
-import os
 
 def main():
-	filesDir = os.path.dirname(os.path.abspath(__file__)) + "/../files/"
-
 	try:
-		musicPlayer = player.Player()
+		player = mapping.MappedPlayer()
 	except pygame.error as exc:
 		print("Could not initialize sound system: %s" % exc)
 		return 1
 
 	try:
 		try:
-			musicPlayer.play(filesDir + "test.mp3")
-			input("Press Enter to stop playback...")
-			musicPlayer.stop()
+			soundId = input("Input sound id: ")
+			player.play(soundId)
+			input("Press Enter to stop...")
+			player.stop()
 			input("Press Enter to exit...")
 		except pygame.error as exc:
 			print("Could not play sound file: %s" % exc)
