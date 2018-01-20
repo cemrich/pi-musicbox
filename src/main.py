@@ -11,11 +11,11 @@ def main():
 
 	try:
 		try:
-			soundId = input("Input sound id: ")
-			player.play(soundId)
-			input("Press Enter to stop...")
-			player.stop()
-			input("Press Enter to exit...")
+			while True:
+				soundId = input("Input sound id: ")
+				player.play(soundId)
+				input("Press Enter to stop...")
+				player.stop()
 		except pygame.error as exc:
 			print("Could not play sound file: %s" % exc)
 			print(exc)
