@@ -28,13 +28,14 @@ def startMainLoop(reader, player):
 		time.sleep(SLEEPTIME_SECONDS)
 
 def main():
-	reader = rfid.Reader()
-
 	try:
 		player = mapping.MappedPlayer()
 	except pygame.error as exc:
 		print("Could not initialize sound system: %s" % exc)
 		return 1
+
+	reader = rfid.Reader()
+	player.setVolume(0.5)
 
 	try:
 		print("Start detecting tags...")

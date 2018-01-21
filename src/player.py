@@ -16,9 +16,13 @@ class Player:
 	def __init__(self):
 		self.clock = pygame.time.Clock()
 		self.shouldPlay = False
+		self.volume = 1.0
 
 		pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
 
+	def setVolume(self, volume):
+		self.volume = volume
+		pygame.mixer.music.set_volume(self.volume)
 
 	def play(self, filePath):
 		"""Stream music with mixer.music module.
@@ -54,4 +58,5 @@ class Player:
 
 	def _playSingle(self, filePath):
 		pygame.mixer.music.load(filePath)
+		pygame.mixer.music.set_volume(self.volume)
 		pygame.mixer.music.play()
