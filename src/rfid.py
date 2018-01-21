@@ -1,49 +1,29 @@
-#!/usr/bin/env python3
-
-import signal
-import time
-import mapping
-import pygame
-import sys
-
 from pirc522 import RFID
 
-rdr = RFID()
-util = rdr.util()
-util.debug = True
+class Reader:
 
-def end_read(signal,frame):
-	print("\nCtrl+C captured, ending read.")
-	rdr.cleanup()
-	sys.exit()
+	def __init__(self):
+		self.rdr = RFID()
+		self.tagHex = None
 
-def main():
-	signal.signal(signal.SIGINT, end_read)
+	def hasHexChanged(self):
+		newTagHex = None
+		(error, data) = self.rdr.request()
 
-	try:
-		player = mapping.MappedPlayer()
-	except pygame.error as exc:
-		print("Could not initialize sound system: %s" % exc)
-		return 1
-
-	print("Starting...")
-	while True:
-		(error, data) = rdr.request()
-
-		if error:
-			# TODO: stop player
-			print("No tag detected: %s" % error)
-		else:
-			(error, uid) = rdr.anticoll()
+		if not error:
+			(error, uid) = self.rdr.anticoll()
 
 			if error:
-				print("Could not read tag id: %s" % error)
+				raise "Could not read tag id: %s" % error
 			else:
-				hexString = "".join(["%0.2X" % c for c in uid[0:4]])
-				print("Tag detected: %s" % hexString)
-				player.play(hexString)
+				newTagHex = "".join(["%0.2X" % c for c in uid[0:4]])
 
-		time.sleep(1)
+		# workaround for bug https://github.com/ondryaso/pi-rc522/issues/10
+		self.rdr.halt()
 
-if __name__ == '__main__':
-	sys.exit(main())
+		hasChanged = newTagHex != self.tagHex
+		self.tagHex = newTagHex
+		return hasChanged
+
+	def destroy(self):
+		self.rdr.cleanup()

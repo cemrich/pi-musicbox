@@ -1,8 +1,33 @@
 import mapping
+import rfid
 import pygame
 import sys
+import time
+
+SLEEPTIME_SECONDS = 0.1
+
+def onLoopIteration(reader, player):
+	if reader.hasHexChanged():
+		if reader.tagHex:
+			print("Tag detected: %s" % reader.tagHex)
+			try:
+				player.play(reader.tagHex)
+			except pygame.error as exc:
+				print("Could not play sound file: %s" % exc)
+		else:
+			print("Tag removed")
+			player.stop()
+
+def startMainLoop(reader, player):
+	global SLEEPTIME_SECONDS
+
+	while True:
+		onLoopIteration(reader, player)
+		time.sleep(SLEEPTIME_SECONDS)
 
 def main():
+	reader = rfid.Reader()
+
 	try:
 		player = mapping.MappedPlayer()
 	except pygame.error as exc:
@@ -10,18 +35,13 @@ def main():
 		return 1
 
 	try:
-		try:
-			while True:
-				soundId = input("Input sound id: ")
-				player.play(soundId)
-				input("Press Enter to stop...")
-				player.stop()
-		except pygame.error as exc:
-			print("Could not play sound file: %s" % exc)
-			print(exc)
+		print("Start detecting tags...")
+		startMainLoop(reader, player)
 	except KeyboardInterrupt:
 		# if user hits Ctrl-C, exit gracefully
 		pass
+
+	reader.destroy()
 	return 0
 
 if __name__ == '__main__':
