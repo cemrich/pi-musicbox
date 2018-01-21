@@ -14,7 +14,7 @@ class Reader:
 			(error, uid) = self.rdr.anticoll()
 
 			if error:
-				raise "Could not read tag id: %s" % error
+				raise IOError("Could not read tag id: %s" % error)
 			else:
 				newTagHex = "".join(["%0.2X" % c for c in uid[0:4]])
 
