@@ -47,7 +47,12 @@ class Player:
 
 	def stop(self):
 		self.shouldPlay = False
-		pygame.mixer.music.stop()
+		thread = threading.Thread(target=self._fadeOut)
+		thread.daemon = True # Daemonize thread
+		thread.start()
+
+	def _fadeOut(self):
+		pygame.mixer.music.fadeout(1000)
 
 	def _playMultiple(self, allFiles):
 		for audioFile in allFiles:
