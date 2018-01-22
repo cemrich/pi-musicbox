@@ -9,16 +9,19 @@ import time
 SLEEPTIME_SECONDS = 0.1
 
 def onLoopIteration(reader, player):
-	if reader.hasHexChanged():
-		if reader.tagHex:
-			print("Tag detected: %s" % reader.tagHex)
-			try:
-				player.play(reader.tagHex)
-			except pygame.error as exc:
-				print("Could not play sound file: %s" % exc)
-		else:
-			print("Tag removed")
-			player.stop()
+	try:
+		if reader.hasHexChanged():
+			if reader.tagHex:
+				print("Tag detected: %s" % reader.tagHex)
+				try:
+					player.play(reader.tagHex)
+				except pygame.error as exc:
+					print("Could not play sound file: %s" % exc)
+			else:
+				print("Tag removed")
+				player.stop()
+	except IOError as exc:
+		print("%s" % exc)
 
 def startMainLoop(reader, player):
 	global SLEEPTIME_SECONDS
