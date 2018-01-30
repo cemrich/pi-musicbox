@@ -1,67 +1,41 @@
-import pygame
-import sys
 import os
-import time
-import threading
-
-# global constants
-FREQ = 44100   # same as audio CD
-BITSIZE = -16  # unsigned 16 bit
-CHANNELS = 2   # 1 == mono, 2 == stereo
-BUFFER = 1024  # audio buffer size in no. of samples
-FRAMERATE = 30 # how often to check if playback has finished
+import vlc
 
 class Player:
 
 	def __init__(self):
-		self.clock = pygame.time.Clock()
-		self.shouldPlay = False
-		self.volume = 1.0
+		self.instance = vlc.Instance("--no-video")
 
-		pygame.mixer.init(FREQ, BITSIZE, CHANNELS, BUFFER)
+		self.player = self.instance.media_player_new()
+
+		self.list_player = self.instance.media_list_player_new()
+		self.list_player.set_media_player(self.player)
+
+		event_manager = self.list_player.event_manager()
+		event_manager.event_attach(vlc.EventType.MediaListPlayerNextItemSet, self._on_next_item_set)
 
 	def setVolume(self, volume):
-		self.volume = volume
-		pygame.mixer.music.set_volume(self.volume)
+		self.vlc_volume = (int) (volume * 100)
+		self.player.audio_set_volume(self.vlc_volume)
 
 	def play(self, filePath):
-		"""Stream music with mixer.music module.
-
-		This will stream the sound from disk while playing.
-		"""
-
-		self.shouldPlay = True
+		# TODO: error handling
 
 		if os.path.isdir(filePath):
 			allFiles = [os.path.join(filePath, f) for f in os.listdir(filePath) if os.path.isfile(os.path.join(filePath, f))]
 
-			thread = threading.Thread(target=self._playMultiple, args=([allFiles]))
-			thread.daemon = True # Daemonize thread
-			thread.start()
+			self._play(allFiles)
 		else:
-			thread = threading.Thread(target=self._playSingle, args=([filePath]))
-			thread.daemon = True # Daemonize thread
-			thread.start()
-			self._playSingle(filePath)
-
+			self._play([filePath])
 
 	def stop(self):
-		self.shouldPlay = False
-		thread = threading.Thread(target=self._fadeOut)
-		thread.daemon = True # Daemonize thread
-		thread.start()
+		self.list_player.stop()
 
-	def _fadeOut(self):
-		pygame.mixer.music.fadeout(1000)
+	def _play(self, allFiles):
+		media_list = self.instance.media_list_new(allFiles)
+		self.list_player.set_media_list(media_list)
+		self.list_player.play()
 
-	def _playMultiple(self, allFiles):
-		for audioFile in allFiles:
-			if self.shouldPlay:
-				self._playSingle(audioFile)
-				while pygame.mixer.music.get_busy():
-					time.sleep(0.1)
-
-	def _playSingle(self, filePath):
-		pygame.mixer.music.load(filePath)
-		pygame.mixer.music.set_volume(self.volume)
-		pygame.mixer.music.play()
+	def _on_next_item_set(self, event):
+		# reset volume to avoid vlc bug
+		self.player.audio_set_volume(self.vlc_volume)

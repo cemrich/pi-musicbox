@@ -1,6 +1,4 @@
-import sys
 import os
-import pygame
 import player
 
 class MappedPlayer:
