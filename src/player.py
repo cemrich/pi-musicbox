@@ -22,7 +22,8 @@ class Player:
 		# TODO: error handling
 
 		if os.path.isdir(filePath):
-			allFiles = [os.path.join(filePath, f) for f in os.listdir(filePath) if os.path.isfile(os.path.join(filePath, f))]
+			allFiles = [os.path.join(filePath, f) for f in os.listdir(filePath)]
+			allFiles = sorted(filter(lambda f: os.path.isfile(f), allFiles))
 
 			self._play(allFiles)
 		else:
