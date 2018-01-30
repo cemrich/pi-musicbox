@@ -7,33 +7,33 @@ import time
 
 SLEEPTIME_SECONDS = 0.1
 
-def onLoopIteration(reader, player):
+def on_loop_iteration(reader, player):
 	try:
-		if reader.hasHexChanged():
-			if reader.tagHex:
-				print("Tag detected: %s" % reader.tagHex)
-				player.play(reader.tagHex)
+		if reader.has_hex_changed():
+			if reader.tag_hex:
+				print("Tag detected: %s" % reader.tag_hex)
+				player.play(reader.tag_hex)
 			else:
 				print("Tag removed")
 				player.stop()
 	except IOError as exc:
-		print("%s" % exc)
+		print("-IOError: %s" % exc)
 
-def startMainLoop(reader, player):
+def start_main_loop(reader, player):
 	global SLEEPTIME_SECONDS
 
 	while True:
-		onLoopIteration(reader, player)
+		on_loop_iteration(reader, player)
 		time.sleep(SLEEPTIME_SECONDS)
 
 def main():
 	player = mapping.MappedPlayer()
 	reader = rfid.Reader()
-	player.setVolume(0.5)
+	player.set_volume(0.5)
 
 	try:
 		print("Start detecting tags...")
-		startMainLoop(reader, player)
+		start_main_loop(reader, player)
 	except KeyboardInterrupt:
 		# if user hits Ctrl-C, exit gracefully
 		pass

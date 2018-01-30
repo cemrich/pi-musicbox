@@ -4,14 +4,14 @@ import player
 class MappedPlayer:
 
 	def __init__(self):
-		self.filesDir = os.path.join(os.path.dirname(__file__), "..", "files")
-		self.player = player.Player()
+		self._files_dir = os.path.join(os.path.dirname(__file__), "..", "files")
+		self._player = player.Player()
 
-	def setVolume(self, volume):
-		self.player.setVolume(volume)
+	def set_volume(self, volume):
+		self._player.set_volume(volume)
 
 	def play(self, id):
-		self.player.play(os.path.join(self.filesDir, id))
+		self._player.play(os.path.join(self._files_dir, id))
 
 	def stop(self):
-		self.player.stop()
+		self._player.stop()
