@@ -1,4 +1,5 @@
 import os
+import math
 import vlc
 
 class Player:
@@ -11,32 +12,45 @@ class Player:
 		self._list_player = self._instance.media_list_player_new()
 		self._list_player.set_media_player(self._player)
 
-		event_manager = self._list_player.event_manager()
-		event_manager.event_attach(vlc.EventType.MediaListPlayerNextItemSet, self._on_next_item_set)
+		event_manager = self._player.event_manager()
+		event_manager.event_attach(vlc.EventType.MediaPlayerPlaying, self._on_play)
+		event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, self._on_item_ended)
 
 	def set_volume(self, volume):
 		self._vlc_volume = (int) (volume * 100)
 		self._player.audio_set_volume(self._vlc_volume)
 
-	def play(self, filePath):
+	def play(self, filePath, progress=0):
 		# TODO: error handling
 
 		if os.path.isdir(filePath):
 			all_files = [os.path.join(filePath, f) for f in os.listdir(filePath)]
 			all_files = sorted(filter(lambda f: os.path.isfile(f), all_files))
 
-			self._play(all_files)
+			self._play(all_files, progress)
 		else:
-			self._play([filePath])
+			self._play([filePath], progress)
 
 	def stop(self):
 		self._list_player.stop()
 
-	def _play(self, all_files):
+	def get_progress(self):
+		return (self._playlist_index + self._player.get_position()) / self._playlist_size
+
+	def _play(self, all_files, progress):
+		self._playlist_size = len(all_files)
+		self._playlist_index = math.floor(self._playlist_size * progress)
+
 		media_list = self._instance.media_list_new(all_files)
 		self._list_player.set_media_list(media_list)
-		self._list_player.play()
+		self._list_player.play_item_at_index(self._playlist_index)
 
-	def _on_next_item_set(self, event):
+		item_progress = self._playlist_size * progress - self._playlist_index
+		self._player.set_position(item_progress)
+
+	def _on_play(self, event):
 		# reset volume to avoid vlc bug
 		self._player.audio_set_volume(self._vlc_volume)
+
+	def _on_item_ended(self, event):
+		self._playlist_index += 1

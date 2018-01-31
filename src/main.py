@@ -29,7 +29,7 @@ def start_main_loop(reader, player):
 def main():
 	player = mapping.MappedPlayer()
 	reader = rfid.Reader()
-	player.set_volume(0.5)
+	player.set_volume(1)
 
 	try:
 		print("Start detecting tags...")
