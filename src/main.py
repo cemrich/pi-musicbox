@@ -38,6 +38,7 @@ def main():
 		# if user hits Ctrl-C, exit gracefully
 		pass
 
+	player.destroy()
 	reader.destroy()
 	return 0
 
