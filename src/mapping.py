@@ -31,4 +31,4 @@ class MappedPlayer:
 
 	def _get_progress(self, id):
 		progress = self._position_storage.get_position(id)
-		return progress if progress < 1 else 0
+		return progress if progress > 0 and progress < 1 else 0
