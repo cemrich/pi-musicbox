@@ -11,9 +11,6 @@ class MappedPlayer:
 		self._progress = dict()
 		self._current_id = ""
 
-	def set_volume(self, volume):
-		self._player.set_volume(volume)
-
 	def play(self, id):
 		self._current_id = id
 
