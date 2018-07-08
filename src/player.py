@@ -12,25 +12,24 @@ class Player:
 		self._list_player = self._instance.media_list_player_new()
 		self._list_player.set_media_player(self._player)
 
+		self._playlist_size = 0
+		self._playlist_index = 0
+
 		event_manager = self._player.event_manager()
 		event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, self._on_item_ended)
 
-	def play(self, filePath, progress=0):
-		# TODO: error handling
-
-		if os.path.isdir(filePath):
-			all_files = [os.path.join(filePath, f) for f in os.listdir(filePath)]
-			all_files = sorted(filter(lambda f: os.path.isfile(f), all_files))
-
-			self._play(all_files, progress)
-		else:
-			self._play([filePath], progress)
+	def play(self, files, progress=0):
+		if (len(files) > 0):
+			self._play(files, progress)
 
 	def stop(self):
 		self._list_player.stop()
 
 	def get_progress(self):
-		return (self._playlist_index + self._player.get_position()) / self._playlist_size
+		if self._playlist_size == 0:
+			return 0
+		else:
+			return (self._playlist_index + self._player.get_position()) / self._playlist_size
 
 	def _play(self, all_files, progress):
 		print("playing at %f: %s" % (progress, all_files))

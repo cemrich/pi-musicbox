@@ -1,23 +1,24 @@
 import os
+import os.path
 import player
 import persistence
+import mediaFileHelper
 
 class MappedPlayer:
 
 	def __init__(self):
-		self._files_dir = os.path.join(os.path.dirname(__file__), "..", "files")
+		base_dir = os.path.join(os.path.dirname(__file__), "..", "files")
 		self._player = player.Player()
+		self._file_helper = mediaFileHelper.MediaFileHelper(base_dir)
 		self._position_storage = persistence.PositionStorage()
 		self._progress = dict()
 		self._current_id = ""
 
 	def play(self, id):
 		self._current_id = id
-
-		full_path = os.path.join(self._files_dir, id)
-		progress = self._get_progress(id)
-
-		self._player.play(full_path, progress)
+		progress = self._get_progress(self._current_id)
+		files = self._file_helper.getFiles(id)
+		self._player.play(files, progress)
 
 	def stop(self):
 		self._save_progress(self._current_id, self._player.get_progress())
