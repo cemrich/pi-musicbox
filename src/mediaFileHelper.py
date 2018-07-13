@@ -41,8 +41,9 @@ class MediaFileHelper:
 
     def _normalize_path(self, path, base_path):
         path = path.strip()
+        print(path, os.path.isabs(path))
 
-        if (os.path.isabs(path)):
+        if (os.path.isabs(path) or "://" in path):
             return path
         else:
             return os.path.join(base_path, path)
