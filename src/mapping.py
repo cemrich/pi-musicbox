@@ -17,8 +17,14 @@ class MappedPlayer:
 	def play(self, id):
 		self._current_id = id
 		progress = self._get_progress(self._current_id)
-		files = self._file_helper.getFiles(id)
-		self._player.play(files, progress)
+		files = self._file_helper.get_files(id)
+
+		if files:
+			self._player.play(files, progress)
+		else:
+			self._file_helper.copy_new(id)
+			files = self._file_helper.get_files(id)
+			self._player.play(files, progress)
 
 	def stop(self):
 		self._save_progress(self._current_id, self._player.get_progress())
