@@ -148,4 +148,4 @@ data.db
 
 # exclude files
 files/**
-!files/.gitkeep
+!files/start.mp3
