@@ -42,6 +42,11 @@ This project uses a [Pimoroni Speaker pHAT](https://shop.pimoroni.com/products/s
 - pinout: https://pinout.xyz/pinout/speaker_phat
 - software / setup: https://github.com/pimoroni/speaker-phat
 
+### MPR121 touch sensor
+
+- short readme: https://github.com/quantenschaum/piripherals/blob/master/piripherals/mpr121.py
+- datasheet: https://www.sparkfun.com/datasheets/Components/MPR121.pdf
+
 ## Similar Projects
 
 - [Phoniebox: the RPi-Jukebox-RFID](https://github.com/MiczFlor/RPi-Jukebox-RFID)
