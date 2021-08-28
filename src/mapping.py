@@ -30,6 +30,12 @@ class MappedPlayer:
 		self._save_progress(self._current_id, self._player.get_progress())
 		self._player.stop()
 
+	def next(self):
+		self._player.next()
+
+	def prev(self):
+		self._player.prev()
+
 	def destroy(self):
 		self._position_storage.destroy()
 

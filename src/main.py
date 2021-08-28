@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import mapping
+from playerControl import PlayerControl
 import rfid
 import sys
 import time
@@ -28,6 +29,7 @@ def start_main_loop(reader, player):
 
 def main():
 	player = mapping.MappedPlayer()
+	playerControl = PlayerControl(player)
 	reader = rfid.Reader()
 	player.play("start.mp3")
 
