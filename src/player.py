@@ -33,17 +33,18 @@ class Player:
 		self._list_player.stop()
 
 	def next(self):
-		self._change_playlist_index(1)
-		print("next: %d" % self._playlist_index)
 
 		if self._playlist_index < self._playlist_size - 1:
-			self._list_player.next()
+			next_result = self._list_player.next()
+			if next_result == 0:
+				self._change_playlist_index(1)
+				print("next: %d" % self._playlist_index)
 
 	def prev(self):
-		self._change_playlist_index(-1)
-		print("prev: %d" % self._playlist_index)
-
-		self._list_player.previous()
+		prev_result = self._list_player.previous()
+		if prev_result == 0:
+			self._change_playlist_index(-1)
+			print("prev: %d" % self._playlist_index)
 
 	def get_progress(self):
 		if self._playlist_size == 0:
