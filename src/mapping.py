@@ -26,6 +26,12 @@ class MappedPlayer:
 			files = self._file_helper.get_files(id)
 			self._player.play(files, progress)
 
+	def set_volume(self, volume):
+		"""
+		@param volume in percent; between 0 and 100
+		"""
+		self._player.set_volume(volume)
+
 	def stop(self):
 		self._save_progress(self._current_id, self._player.get_progress())
 		self._player.stop()

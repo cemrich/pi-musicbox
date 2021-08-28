@@ -18,6 +18,13 @@ class Player:
 		event_manager = self._player.event_manager()
 		event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, self._on_item_ended)
 
+
+	def set_volume(self, volume):
+		"""
+		@param volume in percent; between 0 and 100
+		"""
+		self._player.audio_set_volume(volume)
+
 	def play(self, files, progress=0):
 		if (len(files) > 0):
 			self._play(files, progress)
