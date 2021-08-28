@@ -27,6 +27,22 @@ This project uses a [Pimoroni Speaker pHAT](https://shop.pimoroni.com/products/s
 
 ### Player Controls
 
+To control the player (skipping, volume, etc.) this project uses a MPR121 touch sensor. Because the default i2c pins are already taken by the Speaker pHAT (and I want to avoid soldering at this point), we create an [additional i2c bus](https://www.instructables.com/Raspberry-PI-Multiple-I2c-Devices/) on some available pins.
+
+- Open the confog file with `sudo nano /boot/config.txt`
+- Add the line `dtoverlay=i2c-gpio,bus=4,i2c_gpio_delay_us=1,i2c_gpio_sda=17,i2c_gpio_scl=27` and save. This line will create an aditional i2c bus (bus 4) on GPIO 17 as SDA and GPIO 27 as SCL. Reboot for this change to take effect.
+
+- Connect your the pins of your MPR121 touch sensor to the pi:
+  - SDA: GPIO17
+  - SCL: GPIO27
+  - IRQ: GPIO0
+  - ground: use any [fitting pin](https://pinout.xyz/pinout/ground#)
+  - 3.3V: pin 1 ([the other one](https://pinout.xyz/pinout/3v3_power#) is occupied by the rfid module)
+
+- Run `sudo apt install -y i2c-tools` to install some utilities to detect i2c devices. Run `sudo i2cdetect -y 4`. You should see output with the sensors address `5A` somewhere in it. If you get an error message or no address check your wiring and boot config.
+
+- Run `python3 src/tests-scripts/touch-test.py`. It should produce an output if you touch any pin on the sensor.
+
 ## Hardware Components
 
 ### Raspberry Pi Zero W
