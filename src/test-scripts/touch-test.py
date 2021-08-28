@@ -5,7 +5,7 @@ See readme for set up instructions.
 
 from piripherals import MPR121
 
-mpr = MPR121(bus=4)
+mpr = MPR121(bus=4, irq=0)
 
 for i in range(12):
 	# print status on touch and release
