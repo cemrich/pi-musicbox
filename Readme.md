@@ -6,7 +6,7 @@ This project contains python3 scripts for a simple rfid controlled music box run
 
 ### Basic Pi Setup
 
-You might want to set up the pi zero with [Raspberry Pi OS](https://www.raspberrypi.org/software/) Lite as a headless system to avoid the overhead of graphical output. There are good tutorials out there on how to set up a headless system, enable ssh and wifi before first boot (search for `wpa_supplicant`) and use `raspi-config`. 
+You might want to set up the pi zero with [Raspberry Pi OS](https://www.raspberrypi.org/software/) Lite as a headless system to avoid the overhead of graphical output. There are good tutorials out there on how to set up a headless system, enable ssh and wifi before first boot. I used the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) for easy setup.
 
 If you do not (yet) feel comfortable without a graphical interface, go ahead and use the full Raspberry Pi OS image (with desktop) first.
 
