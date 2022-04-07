@@ -3,11 +3,13 @@ import os.path
 import player
 import persistence
 import mediaFileHelper
+from sfxPlayer import SfxPlayer, Sfx
 
 class MappedPlayer:
 
-	def __init__(self):
+	def __init__(self, sfx_player):
 		base_dir = os.path.join(os.path.dirname(__file__), "..", "files")
+		self._sfx_player = sfx_player
 		self._player = player.Player()
 		self._file_helper = mediaFileHelper.MediaFileHelper(base_dir)
 		self._position_storage = persistence.PositionStorage()
@@ -37,9 +39,11 @@ class MappedPlayer:
 		self._player.stop()
 
 	def next(self):
+		self._sfx_player.play(Sfx.NEXT)
 		self._player.next()
 
 	def prev(self):
+		self._sfx_player.play(Sfx.PREV)
 		self._player.prev()
 
 	def destroy(self):
