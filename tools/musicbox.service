@@ -1,0 +1,22 @@
+[Unit]
+Description=Kids Friendly Music Box based on NFC Tags
+Require=syslog.target
+Require=network-online.target
+Require=sound.target
+Require=remote-fs.target
+Require=pulseaudio.service
+After=syslog.target
+After=network-online.target
+After=sound.target
+After=remote-fs.target
+After=pulseaudio.service
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/opt/musicbox
+ExecStart=python3 -u /opt/musicbox/src/main.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

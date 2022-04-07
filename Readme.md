@@ -43,6 +43,36 @@ To control the player (skipping, volume, etc.) this project uses a MPR121 touch 
 
 - Run `python3 src/tests-scripts/touch-test.py`. It should produce an output if you touch any pin on the sensor.
 
+### Player Code Setup with systemd
+
+```
+git clone https://github.com/cemrich/pi-musicbox/ /opt/musicbox
+cd /opt/musicbox
+pip3 install -r requirements.txt
+sudo cp tools/musicbox.service /etc/systemd/system/
+```
+
+Finds the new service file:
+
+    sudo systemctl daemon-reload
+
+Enables it for start at boot time:
+
+    sudo systemctl enable musicbox
+
+Controlling the service:
+
+```
+sudo systemctl status musicbox
+sudo systemctl stop musicbox
+sudo systemctl start musicbox
+sudo systemctl restart musicbox
+```
+
+Reading the log output:
+
+    journalctl -u musicbox -f 
+
 ## Hardware Components
 
 ### Raspberry Pi Zero W
