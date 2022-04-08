@@ -60,7 +60,7 @@ To control the player (skipping, volume, etc.) this project uses a MPR121 touch 
 ### Player Code Setup with systemd
 
 ```
-git clone https://github.com/cemrich/pi-musicbox/ /opt/musicbox
+sudo git clone https://github.com/cemrich/pi-musicbox/ /opt/musicbox
 sudo chown pi:pi -R /opt/musicbox
 cd /opt/musicbox
 pip3 install -r requirements.txt
