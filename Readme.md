@@ -31,6 +31,14 @@ This project uses a [Pimoroni Speaker pHAT](https://shop.pimoroni.com/products/s
 
 ### RFID
 
+After wiring the RC522 rfid card reader you have to enable the spi interface.
+
+    sudo raspi-config
+
+Select "Interface Options" > "SPI" > "Yes".
+
+Run `src/test-scripts/rfid-test.py` to test the reader.
+
 ### Player Controls
 
 To control the player (skipping, volume, etc.) this project uses a MPR121 touch sensor. Because the default i2c pins are already taken by the Speaker pHAT (and I want to avoid soldering at this point), we create an [additional i2c bus](https://www.instructables.com/Raspberry-PI-Multiple-I2c-Devices/) on some available pins.
