@@ -88,6 +88,38 @@ Reading the log output:
 
     journalctl -u musicbox -f 
 
+## Expose Samba Share
+
+To access files on our musicbox we will expose them as samba share over network:
+
+```
+sudo apt-get install samba samba-common-bin
+sudo nano /etc/samba/smb.conf
+```
+
+Add following lines to the file:
+
+```
+[files]
+path = /opt/musicbox/files
+writeable=Yes
+create mask=0777
+directory mask=0777
+public=no
+```
+
+Now we need to create a new samba user. Here the user is named "pi":
+
+```
+sudo smbpasswd -a pi
+```
+
+After restarting samba we can connect from another machine to \\<my-pi-ip-or-network-name>\files:
+
+```
+sudo systemctl restart smbd
+```
+
 ## Hardware Components
 
 ### Raspberry Pi Zero W
