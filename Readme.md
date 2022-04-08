@@ -10,13 +10,19 @@ You might want to set up the pi zero with [Raspberry Pi OS](https://www.raspberr
 
 If you do not (yet) feel comfortable without a graphical interface, go ahead and use the full Raspberry Pi OS image (with desktop) first.
 
-### Software / Python
+### Software / Python / VLC
 
 You have to have python3 and pip up and running on your system. Try `python3 --version` on your command line. If you don't get any version information install python3 with these command:
 
 ```
 sudo apt update
 sudo apt install python3 python3-pip
+```
+
+Also, you need VLC installed for playback:
+
+```
+sudo apt-get install vlc
 ```
 
 ### Audio
