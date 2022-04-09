@@ -6,6 +6,7 @@ import os
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import rfid
 
+
 reader = rfid.Reader()
 
 def end_read(signal, frame):
@@ -13,16 +14,14 @@ def end_read(signal, frame):
 	reader.destroy()
 	sys.exit()
 
+def on_tag_changed(tag_hex):
+	print("on_tag_changed callback: %s" % tag_hex)
+
+reader.on_tag_changed(on_tag_changed)
 signal.signal(signal.SIGINT, end_read)
 
 
 print("Starting")
 
-while True:
-	if reader.has_hex_changed():
-		if reader.tag_hex:
-			print("Tag detected: %s" % reader.tag_hex)
-		else:
-			print("Tag removed")
-
-		time.sleep(0.1)
+reader.start()
+reader.join()
