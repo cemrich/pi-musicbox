@@ -1,31 +1,28 @@
 import signal
 import time
 import sys
+import os
 
-from pirc522 import RFID
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+import rfid
 
-run = True
-rdr = RFID()
+reader = rfid.Reader()
 
-def end_read(signal,frame):
-    global run
-    print("\nCtrl+C captured, ending read.")
-    run = False
-    rdr.cleanup()
-    sys.exit()
+def end_read(signal, frame):
+	print("\nCtrl+C captured, ending read.")
+	reader.destroy()
+	sys.exit()
 
 signal.signal(signal.SIGINT, end_read)
 
+
 print("Starting")
-while run:
-    rdr.wait_for_tag()
 
-    (error, data) = rdr.request()
-    if not error:
-        print("\nDetected: " + format(data, "02x"))
+while True:
+	if reader.has_hex_changed():
+		if reader.tag_hex:
+			print("Tag detected: %s" % reader.tag_hex)
+		else:
+			print("Tag removed")
 
-    (error, uid) = rdr.anticoll()
-    if not error:
-        tag_hex = "".join(["%0.2X" % c for c in uid[0:4]])
-        print("Card read UID: %s" % tag_hex)
-        time.sleep(1)
+		time.sleep(0.1)
