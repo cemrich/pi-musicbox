@@ -21,7 +21,7 @@ reader.on_tag_changed(on_tag_changed)
 signal.signal(signal.SIGINT, end_read)
 
 
-print("Starting")
+print("Start detecting tags...")
 
 reader.start()
 reader.join()

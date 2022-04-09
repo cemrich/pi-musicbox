@@ -1,5 +1,4 @@
 import threading
-import asyncio
 from pirc522 import RFID
 
 SLEEPTIME_SECONDS = 1
@@ -49,14 +48,14 @@ class Reader(threading.Thread):
 			has_changed = new_tag_hex != self._tag_hex
 
 			if has_changed:
-				print("Tag detected: %s" % new_tag_hex)
+				# print("Tag detected: %s" % new_tag_hex)
 
 				if self._on_tag_changed_callback:
 					self._on_tag_changed_callback(new_tag_hex)
 
 			self._tag_hex = new_tag_hex
 
-		print("Clean up rfid reader")
+		print("Shutting down down rfid reader...")
 		self._rdr.cleanup()
 
 	def destroy(self):
