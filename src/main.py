@@ -3,43 +3,41 @@
 import mapping
 from playerControl import PlayerControl
 import rfid
+import asyncio
 import sys
 import time
 
 SLEEPTIME_SECONDS = 0.1
 
-def on_loop_iteration(reader, player):
-	try:
-		if reader.has_hex_changed():
-			if reader.tag_hex:
-				print("Tag detected: %s" % reader.tag_hex)
-				player.play(reader.tag_hex)
-			else:
-				print("Tag removed")
-				player.stop()
-	except IOError as exc:
-		print("-IOError: %s" % exc)
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
-def start_main_loop(reader, player):
-	global SLEEPTIME_SECONDS
-
-	while True:
-		on_loop_iteration(reader, player)
-		time.sleep(SLEEPTIME_SECONDS)
+def on_tag_changed(tag_hex):
+	if tag_hex:
+		print("Tag detected: %s" % tag_hex)
+		loop.call_soon_threadsafe(lambda: player.play(tag_hex))
+	else:
+		print("Tag removed")
+		loop.call_soon_threadsafe(player.stop)
 
 def main():
+	global player
 	player = mapping.MappedPlayer()
-	playerControl = PlayerControl(player)
+	#playerControl = PlayerControl(player)
 	reader = rfid.Reader()
-	player.play("start.mp3")
+	reader.on_tag_changed(on_tag_changed)
+	#player.play("start.mp3")
 
 	try:
 		print("Start detecting tags...")
-		start_main_loop(reader, player)
+		reader.start()
+		loop.run_forever()
 	except KeyboardInterrupt:
 		# if user hits Ctrl-C, exit gracefully
 		pass
 
+	print("Shutting down musicbox main program...")
+	loop.close()
 	player.destroy()
 	reader.destroy()
 	return 0
