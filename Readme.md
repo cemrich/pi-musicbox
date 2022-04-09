@@ -29,6 +29,10 @@ sudo apt-get install vlc
 
 This project uses a [Pimoroni Speaker pHAT](https://shop.pimoroni.com/products/speaker-phat) which replaces the pi zeros hdmi sound output. Setup instructions can be found at https://github.com/pimoroni/speaker-phat. It should be fine to replace the pHAT with any other audio solution, as long as the `audio-test.py` script produces sound.
 
+To get vlc not to spill error messages, you also need to install pulseaudio:
+
+    sudo apt-get install pulseaudio
+
 ### RFID
 
 After wiring the RC522 rfid card reader you have to enable the spi interface.
