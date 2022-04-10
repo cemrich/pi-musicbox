@@ -46,6 +46,7 @@ class MappedPlayer:
 		self._position_storage.destroy()
 
 	def _save_progress(self, id, progress):
+		print("save playback progress for %s: %f" % (id, progress))
 		self._position_storage.save_position(id, progress)
 
 	def _get_progress(self, id):
