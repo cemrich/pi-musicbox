@@ -68,9 +68,13 @@ class Player:
 		media_list = self._instance.media_list_new(all_files)
 		self._list_player.set_media_list(media_list)
 		self._list_player.play_item_at_index(self._playlist_index)
+		# print("play item at index: %d" % self._playlist_index)
 
 		item_progress = self._playlist_size * progress - self._playlist_index
-		self._player.set_position(item_progress)
+		# print("item_progress: %f" % item_progress)
+
+		if item_progress != 0:
+			self._player.set_position(item_progress)
 
 	def _is_playing(self):
 		return self._player.is_playing()
