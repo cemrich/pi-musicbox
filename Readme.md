@@ -68,29 +68,33 @@ sudo git clone https://github.com/cemrich/pi-musicbox/ /opt/musicbox
 sudo chown pi:pi -R /opt/musicbox
 cd /opt/musicbox
 pip3 install -r requirements.txt
-sudo cp tools/musicbox.service /etc/systemd/system/
+sudo cp tools/musicbox.service /usr/lib/systemd/user/
 ```
+
+Allowing the pi user to start scripts on boot without login:
+
+    loginctl enable-linger pi
 
 Finds the new service file:
 
-    sudo systemctl daemon-reload
+    systemctl --user daemon-reload
 
 Enables it for start at boot time:
 
-    sudo systemctl enable musicbox
+    systemctl --user enable musicbox
 
 Controlling the service:
 
 ```
-sudo systemctl status musicbox
-sudo systemctl stop musicbox
-sudo systemctl start musicbox
-sudo systemctl restart musicbox
+systemctl --user status musicbox
+systemctl --user stop musicbox
+systemctl --user start musicbox
+systemctl --user restart musicbox
 ```
 
 Reading the log output:
 
-    journalctl -u musicbox -f 
+    journalctl --user -u musicbox -f 
 
 ## Expose Samba Share
 

@@ -26,7 +26,7 @@ def main():
 	#playerControl = PlayerControl(player)
 	reader = rfid.Reader()
 	reader.on_tag_changed(on_tag_changed)
-	#player.play("start.mp3")
+	player.play("start.mp3")
 
 	try:
 		print("Start detecting tags...")
