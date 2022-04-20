@@ -37,9 +37,7 @@ class Reader(threading.Thread):
 			if not error:
 				(error, uid) = self._rdr.anticoll()
 
-				if error:
-					raise IOError("Could not read tag id: %s" % error)
-				else:
+				if not error:
 					new_tag_hex = "".join(["%0.2X" % c for c in uid[0:4]])
 
 			# workaround for bug https://github.com/ondryaso/pi-rc522/issues/10
