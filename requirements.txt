@@ -2,3 +2,4 @@ pi-rc522==2.2.1
 python-vlc==3.0.101
 piripherals==0.1a9
 smbus2==0.4.1
+piripherals==0.1a9

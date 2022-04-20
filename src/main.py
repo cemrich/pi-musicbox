@@ -28,7 +28,7 @@ def main():
 	sfxPlayer = SfxPlayer()
 	player = mapping.MappedPlayer(sfxPlayer)
 
-	#playerControl = PlayerControl(player)
+	playerControl = PlayerControl(player)
 	reader = rfid.Reader()
 	reader.on_tag_changed(on_tag_changed)
 
